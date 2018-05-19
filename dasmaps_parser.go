@@ -8,26 +8,32 @@ import (
 	"io/ioutil"
 	"log"
 	"strings"
-    "time"
+	"time"
 
 	"gopkg.in/yaml.v2"
-	//     "github.com/ghodss/yaml"
 )
 
+// NOTE: The json package always orders keys when marshalling. Specifically:
+// - Maps have their keys sorted lexicographically
+// - Structs keys are marshalled in the order defined in the struct
+
+// Params keeps DAS map parameters
 type Params map[string]string
+
+// DASMap represent generic DAS map, we use particular order to perform serialization
 type DASMap struct {
-	System    string   `yaml:"system" json:"system"`
-	Format    string   `yaml:"format" json:"format"`
-	Instances []string `yaml:"instances" json:"instances"`
-	Url       string   `yaml:"urn" json:"urn"`
-	Urn       string   `yaml:"url" json:"url"`
-	Lookup    string   `yaml:"lookup" json:"lookup"`
-	Expire    int      `yaml:"expire" json:"expire"`
-	Params    Params   `yaml:"params" json:"params"`
 	Das_map   []Params `yaml:"das_map" json:"das_map"`
-    Type      string   `yaml:"type" json:"type"`
-    Hash      string   `yaml:"hash" json:"hash"`
-    TimeStamp int64    `yaml:"ts" json:"ts"`
+	Expire    int      `yaml:"expire" json:"expire"`
+	Format    string   `yaml:"format" json:"format"`
+	Hash      string   `yaml:"hash" json:"hash"`
+	Instances []string `yaml:"instances" json:"instances"`
+	Lookup    string   `yaml:"lookup" json:"lookup"`
+	Params    Params   `yaml:"params" json:"params"`
+	System    string   `yaml:"system" json:"system"`
+	TimeStamp int64    `yaml:"ts" json:"ts"`
+	Type      string   `yaml:"type" json:"type"`
+	Url       string   `yaml:"url" json:"url"`
+	Urn       string   `yaml:"urn" json:"urn"`
 }
 
 func (d *DASMap) String() string {
@@ -57,13 +63,13 @@ func dasmaps(input string) {
 		d.System = gRec.System
 		d.Format = gRec.Format
 		d.Instances = gRec.Instances
-        d.Type = "service"
-        r, e := json.Marshal(d)
-        if e != nil {
-            log.Fatal(e)
-        }
+		d.Type = "service"
+		d.TimeStamp = time.Now().Unix()
+		r, e := json.Marshal(d)
+		if e != nil {
+			log.Fatal(e)
+		}
 		d.Hash = fmt.Sprintf("%x", md5.Sum(r))
-        d.TimeStamp = time.Now().Unix()
 		fmt.Println(d.String())
 	}
 }

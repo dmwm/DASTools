@@ -33,21 +33,23 @@ import (
 
 type Record map[string]interface{}
 
+// NOTE: The json package always orders keys when marshalling. Specifically:
+// - Maps have their keys sorted lexicographically
+// - Structs keys are marshalled in the order defined in the struct
 func checkHash(rec Record) bool {
 	keys := mapKeys(rec)
 	if inList("hash", keys) {
 		h := rec["hash"]
-		delete(rec, "hash")
-		delete(rec, "ts")
-		delete(rec, "expire")
+		// reset hash value to calculate new md5 checksum
+		rec["hash"] = ""
 		data, err := json.Marshal(rec)
 		if err != nil {
 			log.Fatal(err)
 		}
 		rh := fmt.Sprintf("%x", md5.Sum(data))
 		if rh != h {
-			fmt.Println("record", string(data))
-			fmt.Println("record hash ", h)
+			fmt.Println(string(data))
+			fmt.Println(" record hash", h)
 			fmt.Println("computed md5", rh)
 			log.Fatal("Invalid hash")
 		}
