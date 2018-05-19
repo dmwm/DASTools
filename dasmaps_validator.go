@@ -49,6 +49,8 @@ func checkHash(rec Record) bool {
 		rh := fmt.Sprintf("%x", md5.Sum(data))
 		if rh != h {
 			fmt.Println(string(data))
+			fmt.Println("")
+			fmt.Println(" record type", recordType(rec))
 			fmt.Println(" record hash", h)
 			fmt.Println("computed md5", rh)
 			log.Fatal("Invalid hash")
@@ -118,22 +120,16 @@ func validateDasmaps(input string, verbose int) {
 		}
 		switch t := recordType(rec); t {
 		case "das":
-			fmt.Println("das record")
 			checkHash(rec)
 		case "arecord":
-			fmt.Println("arecord record")
 			checkHash(rec)
 		case "notation":
-			fmt.Println("notation record")
 			checkHash(rec)
 		case "verification":
-			fmt.Println("verification record")
 			checkHash(rec)
 		case "presentation":
-			fmt.Println("presentation record")
 			checkHash(rec)
 		case "input_values":
-			fmt.Println("input_valus record")
 			checkHash(rec)
 		default:
 			r, e := json.Marshal(rec)
