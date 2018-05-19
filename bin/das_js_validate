@@ -1,0 +1,27 @@
+#!/bin/bash
+# Author: V. Kuznetsov
+# description: this script validates DAS maps
+
+usage="Usage: das_js_validate <DASMaps directory>"
+if [ $# -ne 1 ]; then
+    echo $usage
+    exit 1
+fi
+if [ "$1" == "-h" ] || [ "$1" == "-help" ] || [ "$1" == "--help" ]; then
+    echo $usage
+    exit 1
+fi
+set -e
+
+DASMAPS_DIR=$1
+
+for inst in prod dev int
+do
+    echo "validating: $DASMAPS_DIR/das_maps_dbs_$inst.js"
+    dasmaps_validator --dasmaps $DASMAPS_DIR/das_maps_dbs_$inst.js
+    echo "validating: $DASMAPS_DIR/das_testbed_maps_dbs_$inst.js"
+    dasmaps_validator --dasmaps $DASMAPS_DIR/das_testbed_maps_dbs_$inst.js
+done
+
+echo "validating: $DASMAPS_DIR/kws/update_keylearning_db.js"
+dasmaps_validator --keylearning $DASMAPS_DIR/kws/update_keylearning_db.js
