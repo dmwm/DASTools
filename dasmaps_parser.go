@@ -189,7 +189,7 @@ func dasmaps(input string) {
 	}
 	var gRec DASMap
 	for i, r := range strings.Split(string(data), "---") {
-		if strings.Contains(r, "presentation") {
+		if strings.Contains(input, "presentation") { // presentation map
 			n := PresentationRecord{}
 			err = yaml.Unmarshal([]byte(r), &n)
 			if err != nil {
@@ -203,7 +203,9 @@ func dasmaps(input string) {
 			}
 			n.Hash = fmt.Sprintf("%x", md5.Sum(r))
 			fmt.Println(recString(n))
-		} else if strings.Contains(r, "urn") { // das record
+			continue
+		}
+		if strings.Contains(r, "urn") || strings.Contains(r, "format") { // das record
 			n := DASMap{}
 			err = yaml.Unmarshal([]byte(r), &n)
 			if err != nil {
