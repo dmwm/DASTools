@@ -57,6 +57,7 @@ func (n *Notation) String() string {
 type Notations struct {
 	Hash      string     `yaml:"hash" json:"hash"`
 	Notations []Notation `yaml:"notations" json:"notations"`
+	System    string   `yaml:"system" json:"system"`
 	TimeStamp int64      `yaml:"ts" json:"ts"`
 	Type      string     `yaml:"type" json:"type"`
 }
@@ -232,6 +233,7 @@ func dasmaps(input string) {
 			if err != nil {
 				log.Fatalf("record: %v, %v", r, err)
 			}
+			n.System = gRec.System
 			n.Type = "notation"
 			n.TimeStamp = time.Now().Unix()
 			r, e := json.Marshal(n)
