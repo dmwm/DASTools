@@ -1,0 +1,82 @@
+#!/bin/bash
+
+if [ $# -eq 0 ] || [ "$1" == "-h" ] || [ "$1" == "-help" ] || [ "$1" == "--help" ]; then
+    echo "Usage: das_create_json_maps <DAS YML path>"
+    echo "e.g. : das_create_json_maps src/python/DAS/services/maps"
+    exit
+fi
+
+# define location of DAS maps
+if [ -n "$1" ]; then
+    das_map_dir=$1
+fi
+# check that we're able to locate das map dir
+if [ -z "$das_map_dir" ]; then
+    echo "Unable to locate $das_map_dir"
+    exit 1
+fi
+echo "DAS YML: $das_map_dir"
+
+# build DAS JSON maps out of DAS YML files
+# the dasmaps js files are written to src/python/DAS/services/cms_maps/ into
+# das_maps.js and das_testbed_maps.js
+
+# build DAS JSON maps out of DAS YML files
+build_das_maps()
+{
+    cmd="dasmaps_parser"
+    dir=$das_map_dir
+    tdir=/tmp/dasmaps
+    for inst in prod int dev
+    do
+
+        # get fresh copy of maps, since we'll substitute dbs instances
+        rm -rf $tdir
+        mkdir -p $tdir
+        cp $dir/*.yml $tdir
+
+        if [ "$1" == "production" ]; then
+            for amap in `ls $tdir/*.yml`
+            do
+                sed -i -e "s,dbs/prod,dbs/$inst,g" $amap
+                # clean-up back-up files
+                rm -f ${amap}-e
+            done
+#            map_file="$dir/das_maps.js"
+            map_file="das_maps.js"
+        else
+            # testbed maps, replace with testbed urls
+            for amap in `ls $tdir/*.yml`
+            do
+                sed -i -e "s/cmsweb.cern.ch/cmsweb-testbed.cern.ch/g" $amap
+                sed -i -e "s,dbs/prod,dbs/$inst,g" $amap
+                # clean-up back-up files
+                rm -f ${amap}-e
+            done
+#            map_file="$dir/das_testbed_maps.js"
+            map_file="das_testbed_maps.js"
+        fi
+        rm -f $map_file
+        for amap in `ls $tdir/*.yml`
+        do
+            $cmd --input $amap >> $map_file
+        done
+
+        fname=${map_file%%.*}
+        mfile=${fname}_dbs_$inst.js
+#        cp $map_file $mfile
+        mv $map_file ${fname}_dbs_$inst.js
+        # add verification token (md5) to every map
+#        $cmd --get-verification-token-for=$mfile | grep -v "###" >> $mfile
+        echo "Created: $mfile"
+    done
+    rm -f $map_file
+    rm -rf $tdir
+
+}
+
+# generate production DAS maps
+build_das_maps "production"
+
+# generate pre-production DAS maps
+build_das_maps "pre-production"
