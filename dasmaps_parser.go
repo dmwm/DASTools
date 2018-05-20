@@ -92,11 +92,91 @@ func (n *InputValues) String() string {
 	return recString(n)
 }
 
+// Link represents Link record
+type Link struct {
+	Name  string `yaml:"name" json:"name"`
+	Query string `yaml:"query" json:"query"`
+}
+
+// String method provides string representation of Link structure
+func (n *Link) String() string {
+	return recString(n)
+}
+
+// Item represents unique item in Presentation record
+type Item struct {
+	Das      string   `yaml:"das" json:"das"`
+	Diff     []string `yaml:"diff" json:"diff"`
+	Examples []string `yaml:"examples" json:"examples"`
+	Link     []Link   `yaml:"link" json:"link"`
+	Ui       string   `yaml:"ui" json:"ui"`
+}
+
+// String method provides string representation of Item structure
+func (n *Item) String() string {
+	return recString(n)
+}
+
+type Presentation map[string][]Item
+
+// String method provides string representation of Presentation structure
+func (n *Presentation) String() string {
+	return recString(n)
+}
+
+// type PRecord map[string]Presentation
+type PRecord struct {
+	Block           []Item `yaml:"block" json:"block"`
+	Child           []Item `yaml:"child" json:"child"`
+	City            []Item `yaml:"city" json:"city"`
+	Config          []Item `yaml:"config" json:"config"`
+	Das_query       []Item `yaml:"das_query" json:"das_query"`
+	Dataset         []Item `yaml:"dataset" json:"dataset"`
+	Date            []Item `yaml:"date" json:"date"`
+	Events          []Item `yaml:"events" json:"events"`
+	File            []Item `yaml:"file" json:"file"`
+	Group           []Item `yaml:"group" json:"group"`
+	Ip              []Item `yaml:"ip" json:"ip"`
+	Jobsummary      []Item `yaml:"jobsummary" json:"jobsummary"`
+	Lumi            []Item `yaml:"lumi" json:"lumi"`
+	Mcm             []Item `yaml:"mcm" json:"mcm"`
+	Monitor         []Item `yaml:"monitor" json:"monitor"`
+	Parent          []Item `yaml:"parent" json:"parent"`
+	Primary_dataset []Item `yaml:"primary_dataset" json:"primary_dataset"`
+	Records         []Item `yaml:"records" json:"records"`
+	Release         []Item `yaml:"release" json:"release"`
+	Run             []Item `yaml:"run" json:"run"`
+	Run_status      []Item `yaml:"run_status" json:"run_status"`
+	Site            []Item `yaml:"site" json:"site"`
+	Status          []Item `yaml:"status" json:"status"`
+	Stream          []Item `yaml:"stream" json:"stream"`
+	Summary         []Item `yaml:"summary" json:"summary"`
+	Tier            []Item `yaml:"tier" json:"tier"`
+	User            []Item `yaml:"user" json:"user"`
+}
+
+// String method provides string representation of PresentationRecord structure
+func (n *PRecord) String() string {
+	return recString(n)
+}
+
+type PresentationRecord struct {
+	Hash         string  `yaml:"hash" json:"hash"`
+	Presentation PRecord `yaml:"presentation" json:"presentation"`
+	TimeStamp    int64   `yaml:"ts" json:"ts"`
+	Type         string  `yaml:"type" json:"type"`
+}
+
+// String method provides string representation of PresentationRecord structure
+func (n *PresentationRecord) String() string {
+	return recString(n)
+}
+
 // String method provides string representation of DASMap
 func recString(v interface{}) string {
 	r, e := json.Marshal(v)
 	if e != nil {
-		log.Fatal(e)
+		log.Fatalf("unable to marshal record: %v %v\n", v, e)
 	}
 	return string(r)
 }
@@ -105,11 +185,25 @@ func recString(v interface{}) string {
 func dasmaps(input string) {
 	data, err := ioutil.ReadFile(input)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("unable to read file %s %v\n", input, err)
 	}
 	var gRec DASMap
 	for i, r := range strings.Split(string(data), "---") {
-		if strings.Contains(r, "urn") { // das record
+		if strings.Contains(r, "presentation") {
+			n := PresentationRecord{}
+			err = yaml.Unmarshal([]byte(r), &n)
+			if err != nil {
+				log.Fatalf("record: %v, %v", r, err)
+			}
+			n.Type = "presentation"
+			n.TimeStamp = time.Now().Unix()
+			r, e := json.Marshal(n)
+			if e != nil {
+				log.Fatalf("unable to marshal record: %v, %v\n", n, e)
+			}
+			n.Hash = fmt.Sprintf("%x", md5.Sum(r))
+			fmt.Println(recString(n))
+		} else if strings.Contains(r, "urn") { // das record
 			n := DASMap{}
 			err = yaml.Unmarshal([]byte(r), &n)
 			if err != nil {
@@ -126,7 +220,7 @@ func dasmaps(input string) {
 			n.TimeStamp = time.Now().Unix()
 			r, e := json.Marshal(n)
 			if e != nil {
-				log.Fatal(e)
+				log.Fatalf("unable to marshal record: %v, %v\n", n, e)
 			}
 			n.Hash = fmt.Sprintf("%x", md5.Sum(r))
 			fmt.Println(n.String())
@@ -140,7 +234,7 @@ func dasmaps(input string) {
 			n.TimeStamp = time.Now().Unix()
 			r, e := json.Marshal(n)
 			if e != nil {
-				log.Fatal(e)
+				log.Fatalf("unable to marshal record: %v, %v\n", n, e)
 			}
 			n.Hash = fmt.Sprintf("%x", md5.Sum(r))
 			fmt.Println(n.String())
@@ -154,7 +248,7 @@ func dasmaps(input string) {
 			n.TimeStamp = time.Now().Unix()
 			r, e := json.Marshal(n)
 			if e != nil {
-				log.Fatal(e)
+				log.Fatalf("unable to marshal record: %v, %v\n", n, e)
 			}
 			n.Hash = fmt.Sprintf("%x", md5.Sum(r))
 			fmt.Println(n.String())
