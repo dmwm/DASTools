@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"runtime"
 	"time"
 
 	"gopkg.in/mgo.v2"
@@ -54,7 +55,7 @@ func main() {
 	flag.IntVar(&verbose, "verbose", 0, "verbosity level")
 	flag.Parse()
 	if version {
-		info()
+		fmt.Println(info())
 		return
 	}
 	cleanup(port, delta, verbose)

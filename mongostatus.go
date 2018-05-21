@@ -7,6 +7,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"runtime"
+	"time"
 
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -25,7 +27,7 @@ func main() {
 	flag.IntVar(&port, "port", 8230, "MongoDB port")
 	flag.Parse()
 	if version {
-		info()
+		fmt.Println(info())
 		return
 	}
 	uri := fmt.Sprintf("mongodb://localhost:%d", port)

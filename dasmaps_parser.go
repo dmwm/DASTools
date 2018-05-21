@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"runtime"
 	"strings"
 	"time"
 
@@ -275,7 +276,7 @@ func main() {
 	flag.IntVar(&verbose, "verbose", 0, "verbosity level")
 	flag.Parse()
 	if version {
-		info()
+		fmt.Println(info())
 		return
 	}
 	dasmaps(input)

@@ -11,26 +11,11 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"runtime"
+	"time"
 )
 
-// validate input dasmap file
-/*
-{"hash": "84b55197205fc1ef1fcdb943a2487862", "format": "JSON", "url": "https://cmsweb.cern.ch/sitedb/data/prod/roles", "urn": "roles", "ts": 1525096018.0, "system": "sitedb2", "das_map": [{"rec_key": "user.role", "api_arg": "match", "das_key": "role"}], "services": "", "expire": 3600, "lookup": "role", "wild_card": "*", "params": {"match": "optional"}, "type": "service"}
-{"arecord": {"count": 6, "type": "service", "system": "sitedb2"}}
-{"input_values": [{"url": "https://cmsweb.cern.ch/sitedb/data/prod/site-names", "input": "site.name", "test": "T1*", "jsonpath_selector": "$.result[*][2]"}], "type": "input_values", "system": "sitedb2", "hash": "ed47f30560fda174df1d2f38073a8d02"}
-{"notations": [{"rec_key": "site.name", "api": "", "api_output": "site.cms_name"}, {"rec_key": "name", "api": "group_responsibilities", "api_output": "user_group"}, {"rec_key": "name", "api": "", "api_output": "alias"}], "hash": "4b861b22321625e9f9f5b2e25b0c3762", "type": "notation", "ts": 1525096019.0, "system": "sitedb2"}
-{"arecord": {"count": 1, "type": "notation", "system": "sitedb2"}}
-{"verification_token": "7915820eaee71521c9bb6d7345731666", "type": "verification_token"}
-*/
-// var (
-//     dasMapKeys := []string{"rec_key", "api_arg", "das_key"}
-//     dasRecKeys := []string{"hash", "format", "url", "urn", "ts", "system", "das_maps", "services", "expire", "lookup", "wild_card", "params", "type"}
-//     notationKeys := []string{"notations", "hash", "type", "ts", "system"}
-//     notMapKeys := []string{"rec_key", "api", "api_outptu"}
-//     arecordKeys := []string{"count", "type", "system"}
-//     verKeys := []string{"verification_token", "type"}
-// )
-
+// Record represents DAS map record
 type Record map[string]interface{}
 
 // NOTE: The json package always orders keys when marshalling. Specifically:
@@ -157,7 +142,7 @@ func main() {
 	flag.IntVar(&verbose, "verbose", 0, "verbosity level")
 	flag.Parse()
 	if version {
-		info()
+		fmt.Println(info())
 		return
 	}
 	validateDasmaps(input, verbose)
