@@ -12,10 +12,22 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+func info() string {
+	goVersion := runtime.Version()
+	tstamp := time.Now()
+	return fmt.Sprintf("git={{VERSION}} go=%s date=%s", goVersion, tstamp)
+}
+
 func main() {
+	var version bool
+	flag.BoolVar(&version, "version", false, "Show version")
 	var port int
 	flag.IntVar(&port, "port", 8230, "MongoDB port")
 	flag.Parse()
+	if version {
+		info()
+		return
+	}
 	uri := fmt.Sprintf("mongodb://localhost:%d", port)
 	session, err := mgo.Dial(uri)
 	if err != nil {

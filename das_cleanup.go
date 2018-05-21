@@ -37,7 +37,15 @@ func cleanup(port, delta, verbose int) {
 	}
 }
 
+func info() string {
+	goVersion := runtime.Version()
+	tstamp := time.Now()
+	return fmt.Sprintf("git={{VERSION}} go=%s date=%s", goVersion, tstamp)
+}
+
 func main() {
+	var version bool
+	flag.BoolVar(&version, "version", false, "Show version")
 	var port int
 	flag.IntVar(&port, "port", 8230, "MongoDB port")
 	var delta int
@@ -45,5 +53,9 @@ func main() {
 	var verbose int
 	flag.IntVar(&verbose, "verbose", 0, "verbosity level")
 	flag.Parse()
+	if version {
+		info()
+		return
+	}
 	cleanup(port, delta, verbose)
 }

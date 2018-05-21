@@ -57,7 +57,7 @@ func (n *Notation) String() string {
 type Notations struct {
 	Hash      string     `yaml:"hash" json:"hash"`
 	Notations []Notation `yaml:"notations" json:"notations"`
-	System    string   `yaml:"system" json:"system"`
+	System    string     `yaml:"system" json:"system"`
 	TimeStamp int64      `yaml:"ts" json:"ts"`
 	Type      string     `yaml:"type" json:"type"`
 }
@@ -260,11 +260,23 @@ func dasmaps(input string) {
 	}
 }
 
+func info() string {
+	goVersion := runtime.Version()
+	tstamp := time.Now()
+	return fmt.Sprintf("git={{VERSION}} go=%s date=%s", goVersion, tstamp)
+}
+
 func main() {
+	var version bool
+	flag.BoolVar(&version, "version", false, "Show version")
 	var input string
 	flag.StringVar(&input, "input", "", "yam das map file")
 	var verbose int
 	flag.IntVar(&verbose, "verbose", 0, "verbosity level")
 	flag.Parse()
+	if version {
+		info()
+		return
+	}
 	dasmaps(input)
 }

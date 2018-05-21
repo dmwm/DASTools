@@ -142,26 +142,23 @@ func validateDasmaps(input string, verbose int) {
 
 }
 
-// validate keylearning das record
-// {"keys": ["dataset", "file", "lumi"], "urn": "file_lumi4dataset", "system": "dbs3", "members": ["file.name", "lumi.number"]}
-func validateKeylearning(input string, verbose int) {
-	if verbose > 0 {
-		fmt.Println("validate keylearning", input)
-	}
-	os.Exit(0)
+func info() string {
+	goVersion := runtime.Version()
+	tstamp := time.Now()
+	return fmt.Sprintf("git={{VERSION}} go=%s date=%s", goVersion, tstamp)
 }
 
 func main() {
-	var dasmaps string
-	flag.StringVar(&dasmaps, "dasmaps", "", "dasmaps file")
-	var keylearning string
-	flag.StringVar(&keylearning, "keylearning", "", "keylearning file")
+	var version bool
+	flag.BoolVar(&version, "version", false, "Show version")
+	var input string
+	flag.StringVar(&input, "input", "", "input file")
 	var verbose int
 	flag.IntVar(&verbose, "verbose", 0, "verbosity level")
 	flag.Parse()
-	if dasmaps != "" {
-		validateDasmaps(dasmaps, verbose)
-	} else if keylearning != "" {
-		validateKeylearning(keylearning, verbose)
+	if version {
+		info()
+		return
 	}
+	validateDasmaps(input, verbose)
 }
