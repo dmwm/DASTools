@@ -136,8 +136,8 @@ func info() string {
 func main() {
 	var version bool
 	flag.BoolVar(&version, "version", false, "Show version")
-	var input string
-	flag.StringVar(&input, "input", "", "input file")
+	var dasmaps string
+	flag.StringVar(&dasmaps, "dasmaps", "", "dasmaps file")
 	var verbose int
 	flag.IntVar(&verbose, "verbose", 0, "verbosity level")
 	flag.Parse()
@@ -145,5 +145,5 @@ func main() {
 		fmt.Println(info())
 		return
 	}
-	validateDasmaps(input, verbose)
+	validateDasmaps(dasmaps, verbose)
 }
