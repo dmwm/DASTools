@@ -21,7 +21,6 @@ build:
 	sed -i -e "s,$(TAG),{{VERSION}},g" dasmaps_validator.go
 	sed -i -e "s,$(TAG),{{VERSION}},g" mongostatus.go
 	mv das_cleanup dasmaps_parser dasmaps_validator mongostatus bin
-	rm *.go-e
 
 clean:
 	go clean; rm -rf pkg;
