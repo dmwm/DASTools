@@ -14,3 +14,4 @@ bin/das_cleanup
 bin/dasmaps_parser
 bin/dasmaps_validator
 bin/mongostatus
+bin/mongoimport
