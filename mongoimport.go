@@ -4,10 +4,10 @@ package main
 // Copyright (c) 2018 - Valentin Kuznetsov <vkuznet AT gmail dot com>
 
 import (
-    "bufio"
+	"bufio"
+	"encoding/json"
 	"flag"
 	"fmt"
-    "encoding/json"
 	"os"
 	"runtime"
 	"time"
@@ -48,17 +48,17 @@ func main() {
 	}
 	defer session.Close()
 
-    c := session.DB(db).C(collection)
-    f, err := os.Open(file)
-    scanner := bufio.NewScanner(f)
-    for scanner.Scan() {
-        line := scanner.Text()
-        var data map[string]interface{}
-        err := json.Unmarshal([]byte(line), &data)
-        if err != nil {
-            fmt.Println(err)
-            os.Exit(1)
-        }
-        c.Insert(data)
-    }
+	c := session.DB(db).C(collection)
+	f, err := os.Open(file)
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		line := scanner.Text()
+		var data map[string]interface{}
+		err := json.Unmarshal([]byte(line), &data)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		c.Insert(data)
+	}
 }
