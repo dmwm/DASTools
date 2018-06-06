@@ -11,11 +11,13 @@ build:
 	sed -i -e "s,{{VERSION}},$(TAG),g" dasmaps_parser.go
 	sed -i -e "s,{{VERSION}},$(TAG),g" dasmaps_validator.go
 	sed -i -e "s,{{VERSION}},$(TAG),g" mongostatus.go
+	sed -i -e "s,{{VERSION}},$(TAG),g" mongoimport.go
 	go clean; rm -rf pkg;
 	go build ${flags} das_cleanup.go
 	go build ${flags} dasmaps_parser.go
 	go build ${flags} dasmaps_validator.go
 	go build ${flags} mongostatus.go
+	go build ${flags} mongoimport.go
 	sed -i -e "s,$(TAG),{{VERSION}},g" das_cleanup.go
 	sed -i -e "s,$(TAG),{{VERSION}},g" dasmaps_parser.go
 	sed -i -e "s,$(TAG),{{VERSION}},g" dasmaps_validator.go
