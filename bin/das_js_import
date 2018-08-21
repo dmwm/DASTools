@@ -87,15 +87,22 @@ update_db()
 prepare_das_db_update(){
     mkdir -p $DASMAPS_DIR
     rm -f $DASMAPS_DIR/*mapping*-schema-stamp
+    host=`hostname -s`
+    echo "### Prepare DAS DB mapping update"
+    echo "DASMAPS_FILE=$DASMAPS_FILE"
+    echo `ls -l $DASMAPS_FILE`
     if [ ! -f $DASMAPS_FILE ]; then
         case $host in
             vocms0126 | vocms0127)
+                echo "### will use das_maps_dbs_dev.js"
                 cp -f $DASMAPS_DIR/das_maps_dbs_dev.js $DASMAPS_DIR/update_mapping_db.js
                 ;;
             vocms0132 | vocms0731)
+                echo "### will use das_maps_dbs_int.js"
                 cp -f $DASMAPS_DIR/das_maps_dbs_int.js $DASMAPS_DIR/update_mapping_db.js
                 ;;
             *)
+                echo "### will use das_maps_dbs_prod.js"
                 cp -f $DASMAPS_DIR/das_maps_dbs_prod.js $DASMAPS_DIR/update_mapping_db.js
                 ;;
         esac
