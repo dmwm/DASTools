@@ -93,12 +93,12 @@ prepare_das_db_update(){
     if [ ! -f $DASMAPS_FILE ]; then
         case $host in
             vocms0126 | vocms0127)
-                echo "### will use das_maps_dbs_dev.js"
-                cp -f $DASMAPS_DIR/das_maps_dbs_dev.js $DASMAPS_DIR/update_mapping_db.js
+                echo "### will use das_testbed_maps_dbs_dev.js"
+                cp -f $DASMAPS_DIR/das_testbed_maps_dbs_dev.js $DASMAPS_DIR/update_mapping_db.js
                 ;;
             vocms0132 | vocms0731)
                 echo "### will use das_maps_dbs_int.js"
-                cp -f $DASMAPS_DIR/das_maps_dbs_int.js $DASMAPS_DIR/update_mapping_db.js
+                cp -f $DASMAPS_DIR/das_testbed_maps_dbs_int.js $DASMAPS_DIR/update_mapping_db.js
                 ;;
             *)
                 echo "### will use das_maps_dbs_prod.js"
