@@ -90,7 +90,6 @@ prepare_das_db_update(){
     host=`hostname -s`
     echo "### Prepare DAS DB mapping update"
     echo "DASMAPS_FILE=$DASMAPS_FILE"
-    echo `ls -l $DASMAPS_FILE`
     if [ ! -f $DASMAPS_FILE ]; then
         case $host in
             vocms0126 | vocms0127)
