@@ -14,7 +14,8 @@ fi
 
 set -e
 
-DASMAPS_URL=${1:-"https://raw.github.com/dmwm/DASMaps/master/js"}
+#DASMAPS_URL=${1:-"https://raw.github.com/dmwm/DASMaps/master/js"}
+DASMAPS_URL=${1:-"https://raw.githubusercontent.com/dmwm/DASMaps/master/js"}
 TMPSTAGEDIR=${2:-"/tmp/DASMaps"}
 
 # fetch DAS maps into TMPSTAGEDIR
