@@ -1,5 +1,3 @@
-GOPATH:=$(PWD):${GOPATH}
-export GOPATH
 flags=-ldflags="-s -w"
 # flags=-ldflags="-s -w -extldflags -static"
 TAG := $(shell git tag | sort -r | head -n 1)
