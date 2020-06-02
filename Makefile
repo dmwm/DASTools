@@ -1,5 +1,5 @@
-GOPATH:=$(PWD):${GOPATH}
-export GOPATH
+#GOPATH:=$(PWD):${GOPATH}
+#export GOPATH
 flags=-ldflags="-s -w"
 # flags=-ldflags="-s -w -extldflags -static"
 TAG := $(shell git tag | sort -r | head -n 1)
@@ -24,7 +24,9 @@ build:
 	sed -i -e "s,$(TAG),{{VERSION}},g" mongostatus.go
 	sed -i -e "s,$(TAG),{{VERSION}},g" mongoimport.go
 	mv das_cleanup dasmaps_parser dasmaps_validator mongostatus mongoimport bin
+	rm *.go-e
 
 clean:
 	go clean; rm -rf pkg;
 	rm bin/{das_cleanup,dasmaps_parser,dasmaps_validator,mongostatus}
+	rm *.go-e
