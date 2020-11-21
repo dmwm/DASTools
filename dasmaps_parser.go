@@ -147,6 +147,7 @@ type PRecord struct {
 	Primary_dataset []Item `yaml:"primary_dataset" json:"primary_dataset"`
 	Records         []Item `yaml:"records" json:"records"`
 	Release         []Item `yaml:"release" json:"release"`
+	Rules           []Item `yaml:"rules" json:"rules"`
 	Run             []Item `yaml:"run" json:"run"`
 	Run_status      []Item `yaml:"run_status" json:"run_status"`
 	Site            []Item `yaml:"site" json:"site"`
