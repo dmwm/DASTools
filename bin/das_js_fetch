@@ -32,6 +32,9 @@ $cmd $DASMAPS_URL/das_maps_dbs_prod.js
 $cmd $DASMAPS_URL/das_testbed_maps_dbs_dev.js
 $cmd $DASMAPS_URL/das_testbed_maps_dbs_int.js
 $cmd $DASMAPS_URL/das_testbed_maps_dbs_prod.js
+# dbs2go maps
+$cmd $DASMAPS_URL/das_testbed_maps_dbs2go_int.js
+$cmd $DASMAPS_URL/das_maps_dbs2go_prod.js
 mkdir -p kws
 cd kws
 $cmd $DASMAPS_URL/kws/update_inputvals_datatype_name.js
