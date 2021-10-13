@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Author: V. Kuznetsov, V. Zemleris
 # Description: this script import DAS JS files into MongoDB
 # User may setup DASMAPS_DIR, the location where DAS maps will be staged

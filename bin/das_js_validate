@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Author: V. Kuznetsov
 # description: this script validates DAS maps
 
