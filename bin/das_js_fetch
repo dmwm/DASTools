@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Author: V. Kuznetsov
 # Description: this script downloads all DAS maps from github location
 
