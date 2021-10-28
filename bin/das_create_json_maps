@@ -48,7 +48,7 @@ build_das_maps()
             # testbed maps, replace with testbed urls
             for amap in `ls $tdir/*.yml`
             do
-                sed -i -e "s/cmsweb.cern.ch/cmsweb-testbed.cern.ch/g" $amap
+                sed -i -e "s/cmsweb.cern.ch:8443/cmsweb-testbed.cern.ch:8443/g" $amap
                 sed -i -e "s,dbs/prod,dbs/$inst,g" $amap
                 # clean-up back-up files
                 rm -f ${amap}-e
