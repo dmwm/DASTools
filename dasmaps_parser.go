@@ -98,6 +98,7 @@ func (n *InputValues) String() string {
 type Link struct {
 	Name  string `yaml:"name" json:"name"`
 	Query string `yaml:"query" json:"query"`
+	Url   string `yaml:"url" json:"url"`
 }
 
 // String method provides string representation of Link structure
