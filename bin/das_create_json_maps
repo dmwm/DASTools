@@ -77,6 +77,8 @@ build_das_maps()
 
 # generate production DAS maps
 build_das_maps "production"
+cat das_maps_dbs_prod.js| sed "s,cmsweb.cern.ch:8443/dbs/prod/global/DBSReader,cmsweb.cern.ch:8443/dbs2go,g" > das_maps_dbs2go_prod.js
 
 # generate pre-production DAS maps
 build_das_maps "pre-production"
+cat das_testbed_maps_dbs_int.js| sed "s,cmsweb-testbed.cern.ch:8443/dbs/int/global/DBSReader,cmsweb-testbed.cern.ch:8443/dbs2go,g" > das_testbed_maps_dbs2go_int.js
